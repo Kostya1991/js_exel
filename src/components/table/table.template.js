@@ -4,9 +4,13 @@ const CODES = {
 };
 
 function createRow(content, index = "") {
+  const resizer = index ? `<div class="row-resize" data-resize="row"></div>` : '';
   return `
-    <div class="table__row">
-      <div class="row-info">${index}</div>
+    <div class="table__row" data-type="resizable" data-row="${index}">
+      <div class="row-info">
+        ${index}
+        ${resizer}
+      </div>
       <div class="row__data">${content}</div>
     </div>
   `;
@@ -14,15 +18,16 @@ function createRow(content, index = "") {
 
 function createCol(col) {
   return `
-    <div class="data__column">
+    <div class="data__column" data-type="resizable" data-col=${col}>
       ${col}
+      <div class="col-resize" data-resize="col"></div>
     </div>
   `;
 };
 
-function createCell(value = "") {
+function createCell(index, value = "") {
   return `
-    <div class="cell" contenteditable>
+    <div class="cell" data-col="${index}" contenteditable>
       ${value}
     </div>
   `;
@@ -35,13 +40,13 @@ export function createTable(rowsCount = 15) {
   const cols = new Array(colsCount)
     .fill('')
     .map((_, index) => String.fromCharCode(CODES.A + index))
-    .map(element => createCol(element))
+    .map((element, index) => createCol(element))
     .join('');
 
   const rows = new Array(colsCount)
     .fill('')
     .map((_, index) => index + 1)
-    .map(() => createCell())
+    .map((_, index) => createCell(String.fromCharCode(CODES.A + index)))
     .join('');
     
   html.push(createRow(cols));

@@ -24,6 +24,30 @@ class Dom {
     return this;
   }
 
+  closest(selector) {
+    return $(this.elementRef.closest(selector));
+  }
+
+  getCoords() {
+    return this.elementRef.getBoundingClientRect();
+  }
+
+  findAll(selector) {
+    return this.elementRef.querySelectorAll(selector);
+  }
+
+  find(selector) {
+    return this.elementRef.querySelector(selector);
+  }
+
+  css(styles = {}) {
+    Object
+      .keys(styles)
+      .forEach(key => {
+        this.elementRef.style[key] = styles[key]
+      });
+  }
+
   append(node) {
     if (node instanceof Dom) {
       node = node.elementRef;
