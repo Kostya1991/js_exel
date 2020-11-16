@@ -15,7 +15,7 @@ export function resizeTable(rootRef, event) {
       [optionPosition]: '-2000px',
       opacity: 1
     });
-    
+
     let value = null;
 
     document.onmousemove = e => {
@@ -40,7 +40,7 @@ export function resizeTable(rootRef, event) {
         opacity: 0,
         bottom: 0
       });
-      
+
       if (type === 'col') {
         cells.forEach(cell => {
           cell.style.width = value + 'px';
@@ -48,6 +48,6 @@ export function resizeTable(rootRef, event) {
       } else {
         parentRef.css({height: value + 'px'});
       }
-    }
+    };
   }
 }

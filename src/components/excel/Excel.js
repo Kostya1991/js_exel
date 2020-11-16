@@ -1,4 +1,4 @@
-import { $ } from "@core/Dom";
+import { $ } from '@core/Dom';
 
 export class Excel {
   constructor(selector, options) {
@@ -23,7 +23,7 @@ export class Excel {
 
   render() {
     this.elementRef.append(this.getRoot());
-    
+
     this.components.forEach(component => component.init());
   }
 }

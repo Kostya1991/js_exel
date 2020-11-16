@@ -42,10 +42,10 @@ class Dom {
 
   css(styles = {}) {
     Object
-      .keys(styles)
-      .forEach(key => {
-        this.elementRef.style[key] = styles[key]
-      });
+        .keys(styles)
+        .forEach(key => {
+          this.elementRef.style[key] = styles[key];
+        });
   }
 
   append(node) {
@@ -74,4 +74,4 @@ $.create = (tagName, classes = '') => {
   }
 
   return $(elementRef);
-}
+};

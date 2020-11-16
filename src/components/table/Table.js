@@ -1,6 +1,6 @@
-import { ExcelComponent } from "@core/ExcelComponent";
+import { ExcelComponent } from '@core/ExcelComponent';
 import { createTable } from './table.template';
-import { resizeTable } from "./table.resize";
+import { resizeTable } from './table.resize';
 
 export class Table extends ExcelComponent {
   static className = 'excel__table';
@@ -8,7 +8,7 @@ export class Table extends ExcelComponent {
   constructor($root) {
     super($root, {
       listeners: ['mousedown']
-    })
+    });
 
     this.$root = $root;
   }
