@@ -12,7 +12,11 @@
     "eol-last": "off",
     "require-jsdoc": "off",
     "valid-jsdoc": "off",
-    "max-len": "off"
+    "max-len": [
+      120
+    ],
+    "linebreak-style": "off",
+    "keyword-spacing": "off"
   },
   "extends": [
     "eslint:recommended",
