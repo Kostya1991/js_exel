@@ -11,6 +11,18 @@ class Dom {
     return this.elementRef.outerHTML.trim();
   }
 
+  text(text) {
+    if (typeof text === 'string') {
+      this.elementRef.textContent = text;
+      return this;
+    } else {
+      if (this.elementRef.tagName.toLowerCase() === 'input') {
+        return this.elementRef.value;
+      }
+      return this.elementRef.textContent.trim();
+    }
+  }
+
   on(eventType, callback) {
     this.elementRef.addEventListener(eventType, callback);
   }
@@ -32,12 +44,38 @@ class Dom {
     return this.elementRef.getBoundingClientRect();
   }
 
+  focus() {
+    this.elementRef.focus();
+    return this;
+  }
+
+  getDataAttribute(attribute, parser) {
+    if (parser) {
+      const id = this.getDataAttribute(attribute).split(':');
+      return {
+        row: +id[0],
+        col: +id[1]
+      };
+    }
+    return this.elementRef.dataset[attribute];
+  }
+
   findAll(selector) {
     return this.elementRef.querySelectorAll(selector);
   }
 
   find(selector) {
-    return this.elementRef.querySelector(selector);
+    return $(this.elementRef.querySelector(selector));
+  }
+
+  addClass(className) {
+    this.elementRef.classList.add(className);
+    return this;
+  }
+
+  removeClass(className) {
+    this.elementRef.classList.remove(className);
+    return this;
   }
 
   css(styles = {}) {
