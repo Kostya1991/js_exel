@@ -1,51 +1,54 @@
-import { $ } from '../../core/Dom';
+import {$} from '@core/dom';
 
-export function resizeTable(rootRef, event) {
-  const resizer = $(event.target);
-  const parentRef = resizer.closest('[data-type="resizable"]');
-  const cells = rootRef.findAll(`[data-col="${parentRef.elementRef.textContent.trim()}"]`);
-  const coords = parentRef.getCoords();
-  const type = resizer.elementRef.dataset.resize;
+export function resizeHandler($root, event) {
+  return new Promise(resolve => {
+    const $resizer = $(event.target);
+    const $parent = $resizer.closest('[data-type="resizable"]');
+    const coords = $parent.getCoords();
+    const type = $resizer.data.resize;
+    const sideProp = type === 'col' ? 'bottom' : 'right';
+    let value;
 
-  const optionPosition = type === 'col' ? 'bottom' : 'right';
-
-  resizer.css({
-    zIndex: 2000,
-    [optionPosition]: '-2000px',
-    opacity: 1
-  });
-
-  let value = null;
-
-  document.onmousemove = e => {
-    if (type === 'col') {
-      const delta = Math.floor(e.pageX - coords.right);
-      value = coords.width + delta;
-      resizer.css({right: -delta + 'px'});
-    } else {
-      const delta = Math.floor(e.pageY - coords.bottom);
-      value = coords.height + delta;
-      resizer.css({bottom: -delta + 'px'});
-    }
-  };
-
-  document.onmouseup = () => {
-    document.onmousemove = null;
-    document.onmouseup = null;
-
-    resizer.css({
-      zIndex: 2000,
-      right: 0,
-      opacity: 0,
-      bottom: 0
+    $resizer.css({
+      opacity: 1,
+      [sideProp]: '-5000px'
     });
 
-    if (type === 'col') {
-      cells.forEach(cell => {
-        cell.style.width = value + 'px';
+    document.onmousemove = e => {
+      if (type === 'col') {
+        const delta = e.pageX - coords.right;
+        value = coords.width + delta;
+        $resizer.css({right: -delta + 'px'});
+      } else {
+        const delta = e.pageY - coords.bottom;
+        value = coords.height + delta;
+        $resizer.css({bottom: -delta + 'px'});
+      }
+    };
+
+    document.onmouseup = () => {
+      document.onmousemove = null;
+      document.onmouseup = null;
+
+      if (type === 'col') {
+        $parent.css({width: value + 'px'});
+        $root.findAll(`[data-col="${$parent.data.col}"]`)
+            .forEach(el => el.style.width = value + 'px');
+      } else {
+        $parent.css({height: value + 'px'});
+      }
+
+      resolve({
+        value,
+        type,
+        id: $parent.data[type]
       });
-    } else {
-      parentRef.css({height: value + 'px'});
-    }
-  };
+
+      $resizer.css({
+        opacity: 0,
+        bottom: 0,
+        right: 0
+      });
+    };
+  });
 }

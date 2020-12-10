@@ -1,33 +1,34 @@
-import { capitalize } from '@core/utils';
+import {capitalize} from '@core/utils';
 
 export class DomListener {
-  constructor(rootRef, listeners = []) {
-    if (!rootRef) {
-      throw new Error('No provide for DomListener');
+  constructor($root, listeners = []) {
+    if (!$root) {
+      throw new Error(`No $root provided for DomListener!`);
     }
-    this.rootRef = rootRef;
+    this.$root = $root;
     this.listeners = listeners;
   }
 
   initDOMListeners() {
     this.listeners.forEach(listener => {
-      const method = getMethodPreffix(listener);
+      const method = getMethodName(listener);
       if (!this[method]) {
-        throw new Error(`Method ${method} is not implemented in ${this.name || ''} Component`);
+        const name = this.name || '';
+        throw new Error(`Method ${method} is not implemented in ${name} Component`);
       }
       this[method] = this[method].bind(this);
-      this.rootRef.on(listener, this[method]);
-    });
+      this.$root.on(listener, this[method]);
+    })
   }
 
   removeDOMListeners() {
     this.listeners.forEach(listener => {
-      const method = getMethodPreffix(listener);
-      this.rootRef.remove(listener, this[method]);
-    });
+      const method = getMethodName(listener);
+      this.$root.off(listener, this[method]);
+    })
   }
 }
 
-function getMethodPreffix(eventName) {
+function getMethodName(eventName) {
   return 'on' + capitalize(eventName);
 }
