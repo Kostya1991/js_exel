@@ -1,5 +1,5 @@
-import { ExcelComponent } from '@core/ExcelComponent';
-import { $ } from '../../core/Dom';
+import {ExcelComponent} from '@core/ExcelComponent';
+import {$} from '@core/dom';
 
 export class Formula extends ExcelComponent {
   static className = 'excel__formula';
@@ -8,41 +8,42 @@ export class Formula extends ExcelComponent {
     super($root, {
       name: 'Formula',
       listeners: ['input', 'keydown'],
-      ...options,
+      subscribe: ['currentText'],
+      ...options
     });
-
-    this.$root = $root;
   }
 
   toHTML() {
     return `
-      <div class="formula__info">fx</div>
-      <div class="formula__input" id="formula__input" contenteditable spellcheck="false"></div>
+      <div class="info">fx</div>
+      <div id="formula" class="input" contenteditable spellcheck="false"></div>
     `;
   }
 
   init() {
     super.init();
-    this.formulaRef = this.$root.find('#formula__input');
 
-    this.on('table:select', cellRef => {
-      this.formulaRef.text(cellRef.text());
-    });
+    this.$formula = this.$root.find('#formula');
 
-    this.on('table:input', cellRef => {
-      this.formulaRef.text(cellRef.text());
+    this.$on('table:select', $cell => {
+      this.$formula.text($cell.data.value);
     });
   }
 
+  storeChanged({currentText}) {
+    this.$formula.text(currentText);
+  }
+
   onInput(event) {
-    this.emit('formula:input', $(event.target).text());
+    const text = $(event.target).text();
+    this.$emit('formula:input', text);
   }
 
   onKeydown(event) {
     const keys = ['Enter', 'Tab'];
-    if (keys.includes(event.code)) {
+    if (keys.includes(event.key)) {
       event.preventDefault();
-      this.emit('formula:blur');
+      this.$emit('formula:done');
     }
   }
 }
