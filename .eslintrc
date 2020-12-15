@@ -12,9 +12,6 @@
     "eol-last": "off",
     "require-jsdoc": "off",
     "valid-jsdoc": "off",
-    "max-len": [
-      120
-    ],
     "linebreak-style": "off",
     "keyword-spacing": "off"
   },
