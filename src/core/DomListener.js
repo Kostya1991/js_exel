@@ -18,14 +18,14 @@ export class DomListener {
       }
       this[method] = this[method].bind(this);
       this.$root.on(listener, this[method]);
-    })
+    });
   }
 
   removeDOMListeners() {
     this.listeners.forEach(listener => {
       const method = getMethodName(listener);
       this.$root.off(listener, this[method]);
-    })
+    });
   }
 }
 
