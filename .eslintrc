@@ -13,10 +13,15 @@
     "require-jsdoc": "off",
     "valid-jsdoc": "off",
     "linebreak-style": "off",
-    "keyword-spacing": "off"
+    "keyword-spacing": "off",
+    "max-len": [
+      "error",
+      {"code": 120}
+    ]
   },
   "extends": [
     "eslint:recommended",
     "google"
-  ]
+  ],
+  "plugins": ["jest"]
 }
